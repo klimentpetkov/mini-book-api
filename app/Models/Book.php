@@ -22,10 +22,10 @@ use OpenApi\Annotations as OA;
  *   )
  * )
  *
- * @extends Model<\Database\Factories\BookFactory>
  */
 class Book extends Model
 {
+    /** @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\BookFactory> */
     use HasFactory;
     protected $fillable = ['title','author','published_at'];
 
@@ -38,6 +38,7 @@ class Book extends Model
      */
     public function report(): HasOne
     {
+        /** @var HasOne<BookReport, Book> */
         return $this->hasOne(BookReport::class);
     }
 }

@@ -17,6 +17,7 @@ class User extends Authenticatable implements PassportAuthenticatable
      */
     use HasApiTokens;
     use HasRoles;
+    /** @use \Illuminate\Database\Eloquent\Factories\HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use Notifiable;
 

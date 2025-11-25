@@ -44,6 +44,7 @@ class BookReport extends Model
      */
     public function book(): BelongsTo
     {
+        /** @var BelongsTo<Book, BookReport> */
         return $this->belongsTo(Book::class);
     }
 }
