@@ -36,6 +36,9 @@ jobs:
           extensions: mbstring, pdo_mysql, xml, zip
           coverage: none
 
+      - name: Ensure bootstrap/cache directory exists
+        run: mkdir -p bootstrap/cache && chmod -R 775 bootstrap/cache
+
       - name: Install composer dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
@@ -43,11 +46,6 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
-
-      - name: Ensure bootstrap/cache directory exists
-        run: |
-          mkdir -p bootstrap/cache
-          chmod -R 775 bootstrap/cache
 
       - name: Run migrations
         run: php artisan migrate --force
