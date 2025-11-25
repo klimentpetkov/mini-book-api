@@ -23,7 +23,6 @@ yarn-error.log
 /.zed
 package-lock.json
 composer.lock
-.env.example
 bootstrap/cache
 storage/*
 database.sqlite
