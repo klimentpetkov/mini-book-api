@@ -2,33 +2,179 @@ openapi: 3.0.3
 info:
   title: Mini Books API
   version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 servers:
   - url: /api/v1
+security:
+  - bearerAuth: []
 paths:
   /books:
     get:
       summary: List books
-      security: [{ bearerAuth: [] }]
+      operationId: listBooks
+      tags: [Books]
       responses:
-        '200': { description: OK }
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
     post:
       summary: Create book
+      operationId: createBook
+      tags: [Books]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required: [title, author]
-              properties:
-                title: { type: string }
-                author: { type: string }
-                published_at: { type: string, format: date-time }
+              $ref: '#/components/schemas/BookStoreRequest'
       responses:
-        '200': { description: Created }
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Validation error
+  /books/{id}:
+    get:
+      summary: Get book
+      operationId: getBook
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Book' } } } }
+        '401': { description: Unauthorized }
+        '404': { description: Not found }
+    put:
+      summary: Full update
+      operationId: updateBook
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookUpdateRequest'
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Book' } } } }
+        '401': { description: Unauthorized }
+        '403': { description: Forbidden }
+        '404': { description: Not found }
+        '422': { description: Validation error }
+    patch:
+      summary: Partial update
+      operationId: partialUpdateBook
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookUpdateRequest'
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Book' } } } }
+        '401': { description: Unauthorized }
+        '403': { description: Forbidden }
+        '404': { description: Not found }
+        '422': { description: Validation error }
+    delete:
+      summary: Delete book
+      operationId: deleteBook
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204': { description: No Content }
+        '401': { description: Unauthorized }
+        '403': { description: Forbidden }
+        '404': { description: Not found }
+  /books/{id}/report:
+    get:
+      summary: Book report
+      operationId: getBookReport
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/BookReport'
+        '401': { description: Unauthorized }
+        '404': { description: Report not ready }
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    Book:
+      type: object
+      required: [title, author, published_at]
+      properties:
+        id: { type: integer, example: 1 }
+        title: { type: string }
+        author: { type: string }
+        published_at: { type: string, format: date-time }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+    BookReport:
+      type: object
+      properties:
+        book_id: { type: integer }
+        summary: { type: string }
+        stats:
+          type: object
+          additionalProperties: true
+        generated_at: { type: string, format: date-time }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+    BookStoreRequest:
+      type: object
+      required: [title, author, published_at]
+      properties:
+        title: { type: string }
+        author: { type: string }
+        published_at: { type: string, format: date-time }
+    BookUpdateRequest:
+      type: object
+      properties:
+        title: { type: string }
+        author: { type: string }
+        published_at: { type: string, format: date-time }
