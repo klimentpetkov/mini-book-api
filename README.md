@@ -44,7 +44,7 @@ Swagger UI: http://localhost:8080/api/documentation
 OpenAPI JSON: http://localhost:8080/docs
 
 ## Postman Setup
-Import the provided collection and set:
+Import the provided collection (mini-book-api.postman_collection.json) and set:
 ```{{base_url}}: http://localhost:8080```
 ```{{token}}: Obtain from /api/v1/login```
 
