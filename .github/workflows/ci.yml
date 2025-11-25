@@ -51,7 +51,7 @@ jobs:
         run: php artisan migrate --force
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --colors=never --no-progress
+        run: vendor/bin/phpunit -c phpunit.ci.xml --colors=never --no-progress
 
       - name: CS Fixer (dry-run)
         run: vendor/bin/php-cs-fixer fix --dry-run --diff
