@@ -1,0 +1,16 @@
+includes:
+	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+	- vendor/larastan/larastan/extension.neon
+
+parameters:
+	level: 6
+	paths:
+		- app
+		- database
+	tmpDir: storage/phpstan
+	# полезно при Laravel
+	scanFiles:
+		- bootstrap/app.php
+	# (по желание) смекчава шумни правила:
+	reportUnmatchedIgnoredErrors: false
+	treatPhpDocTypesAsCertain: false

@@ -1,0 +1,99 @@
+services:
+  app:
+    build: { context: ., dockerfile: docker/app/Dockerfile }
+    environment:
+      DB_CONNECTION: mysql
+      DB_PORT: 3306
+      DB_DATABASE: app
+      DB_USERNAME: app
+      DB_PASSWORD: app
+      QUEUE_CONNECTION: redis
+      REDIS_CLIENT: predis
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/php.ini
+    user: "www-data:www-data"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mysql-test:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "php", "-v"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+        - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      app:
+        condition: service_started
+
+  mysql:
+    image: mysql:8
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - "8001:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mysql-test:
+      image: mysql:8.0
+      container_name: app-mysql-test
+      # no volume mapping required since we dont need the data to persist after container is shut down
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        # upon container first run a database with the name of MYSQL_DATABASE setting will be created
+        - MYSQL_DATABASE=app
+        - MYSQL_USER=app
+        - MYSQL_PASSWORD=app
+      ports:
+        # connect to the test server through port 8011 on localhost
+        - "8011:3306"
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+        - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  queue:
+    build: { context: ., dockerfile: docker/app/Dockerfile }
+    working_dir: /var/www/html
+    command: php artisan queue:work --tries=3 --backoff=5
+    depends_on:
+      app:
+        condition: service_started
+      redis:
+        condition: service_started
+    volumes:
+      - ./:/var/www/html
+    environment:
+      SKIP_MINI_INSTALL: "1"
+
+volumes:
+  db:
+  redis_data:

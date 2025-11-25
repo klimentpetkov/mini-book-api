@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    <php>
+        <server name="APP_ENV" value="testing" force="true" />
+        <server name="APP_DEBUG" value="true"/>
+
+        <server name="DB_CONNECTION" value="mysql" force="true"/>
+
+        <server name="DB_HOST" value="mysql-test" force="true" />
+        <server name="DB_PORT" value="3306"/>
+        <server name="DB_DATABASE" value="app"/>
+        <server name="DB_USERNAME" value="app"/>
+        <server name="DB_PASSWORD" value="app"/>
+
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="APP_MAINTENANCE_DRIVER" value="file"/>
+
+        <server name="PULSE_ENABLED" value="false"/>
+        <server name="MAIL_MAILER" value="array"/>
+
+        <server name="CACHE_STORE" value="array"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+        <!-- <env name="APP_ENV" value="testing"/> -->
+        <!-- <env name="APP_DEBUG" value="true"/> -->
+        <!-- <env name="APP_MAINTENANCE_DRIVER" value="file"/> -->
+        <!-- <env name="BCRYPT_ROUNDS" value="4"/> -->
+
+        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
+        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+
+        <!-- <server name="APP_ENV" value="testing" force="true"/> -->
+        <!-- <server name="DB_HOST" value="mysql-test" force="true"/> -->
+
+        <!-- <env name="DB_CONNECTION" value="mysql"/> -->
+        <!-- <env name="DB_HOST" value="mysql-test"/> -->
+        <!-- <env name="DB_PORT" value="3306"/> -->
+        <!-- <env name="DB_DATABASE" value="app_test"/> -->
+        <!-- <env name="DB_USERNAME" value="app"/> -->
+        <!-- <env name="DB_PASSWORD" value="app"/> -->
+
+        <!-- <env name="PULSE_ENABLED" value="false"/> -->
+        <!-- <env name="MAIL_MAILER" value="array"/> -->
+
+        <!-- <env name="CACHE_STORE" value="array"/> -->
+        <!-- <env name="SESSION_DRIVER" value="array"/> -->
+        <!-- <env name="QUEUE_CONNECTION" value="sync"/> -->
+
+        <!-- <env name="TELESCOPE_ENABLED" value="false"/> -->
+    </php>
+</phpunit>

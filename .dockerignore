@@ -1,0 +1,16 @@
+.git
+.gitignore
+node_modules
+vendor
+public/storage
+
+storage/app/*
+!storage/app/public/.gitignore
+
+storage/framework/*
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+
+storage/logs/*
+!storage/logs/.gitignore

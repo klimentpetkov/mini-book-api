@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+  title: Mini Books API
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /books:
+    get:
+      summary: List books
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Create book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, author]
+              properties:
+                title: { type: string }
+                author: { type: string }
+                published_at: { type: string, format: date-time }
+      responses:
+        '200': { description: Created }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
