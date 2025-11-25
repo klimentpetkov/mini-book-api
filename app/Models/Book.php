@@ -21,6 +21,8 @@ use OpenApi\Annotations as OA;
  *     example="2025-11-19T12:27:14Z"
  *   )
  * )
+ *
+ * @extends Model<\Database\Factories\BookFactory>
  */
 class Book extends Model
 {
@@ -31,6 +33,9 @@ class Book extends Model
         'published_at' => 'datetime',
     ];
 
+    /**
+     * @return HasOne<BookReport, Book>
+     */
     public function report(): HasOne
     {
         return $this->hasOne(BookReport::class);

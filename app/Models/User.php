@@ -12,7 +12,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements PassportAuthenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /**
+     * @method static \Database\Factories\UserFactory factory(...$parameters)
+     */
     use HasApiTokens;
     use HasRoles;
     use HasFactory;

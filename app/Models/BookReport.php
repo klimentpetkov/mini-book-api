@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OpenApi\Annotations as OA;
@@ -39,6 +40,9 @@ class BookReport extends Model
         'generated_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo<Book, BookReport>
+     */
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
