@@ -186,7 +186,7 @@ class BookController extends Controller
      *   @OA\Response(response=404, description="Report not ready")
      * )
      */
-    public function report(Book $book)
+    public function report(Book $book): JsonResponse
     {
         // same policy, like in show()
         $this->authorize('view', $book);
@@ -202,9 +202,5 @@ class BookController extends Controller
         return response()->json([
             'data' => new BookReportResource($report),
         ], Response::HTTP_OK);
-
-        /* return (new BookReportResource($report))
-            ->response()
-            ->setStatusCode(Response::HTTP_OK); */
     }
 }
