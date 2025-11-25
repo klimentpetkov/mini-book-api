@@ -1,21 +1,61 @@
 name: CI
-on: [push, pull_request]
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: app
+          MYSQL_USER: app
+          MYSQL_PASSWORD: app
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          extensions: mbstring, pdo_mysql, xml, zip
           coverage: none
-      - run: composer install --no-interaction --no-progress
-      - run: cp .env.example .env && php artisan key:generate
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Copy .env and generate key
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --colors=never --no-progress
+
       - name: CS Fixer (dry-run)
         run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
       - name: PHPStan (Larastan)
         run: vendor/bin/phpstan analyse --no-progress
+
       - name: Lint OpenAPI
         run: |
-          docker run --rm -v "$PWD:/work" node:20-alpine sh -lc "npm i -g @redocly/cli && redocly lint /work/openapi.yaml"
+          docker run --rm -v "${{ github.workspace }}:/work" node:20-alpine sh -lc "npm install -g @redocly/cli && redocly lint /work/openapi.yaml"
