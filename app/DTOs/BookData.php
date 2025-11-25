@@ -23,6 +23,7 @@ class BookData
         return new self($d['title'], $d['author'], $d['published_at'] ?? null);
     }
 
+    /** @return array<string, string|null> */
     public function toArray(): array
     {
         return [
