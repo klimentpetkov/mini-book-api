@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Jobs\GenerateBookReportJob;
-use App\Repositories\BookRepository;
 use App\DTOs\BookData;
 use App\Events\BookCreated;
 use App\Models\Book;
+use App\Repositories\BookRepository;
 
 class BookService
 {

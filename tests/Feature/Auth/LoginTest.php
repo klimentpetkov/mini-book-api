@@ -5,7 +5,6 @@ namespace Tests\Feature\Auth;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 
 class LoginTest extends TestCase
 {

@@ -8,7 +8,8 @@ class BookData
         public string $title,
         public string $author,
         public ?string $published_at = null,
-    ){}
+    ) {
+    }
 
     /**
      * @param array{
@@ -17,7 +18,8 @@ class BookData
      *   published_at?: string|null
      * } $d
      */
-    public static function fromArray(array $d): self {
+    public static function fromArray(array $d): self
+    {
         return new self($d['title'], $d['author'], $d['published_at'] ?? null);
     }
 

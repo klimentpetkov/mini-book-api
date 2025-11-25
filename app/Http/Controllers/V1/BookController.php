@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\DTOs\BookData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookStoreRequest;
 use App\Http\Requests\BookUpdateRequest;
@@ -9,11 +10,10 @@ use App\Http\Resources\BookReportResource;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use App\Services\BookService;
-use App\DTOs\BookData;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @OA\Tag(

@@ -6,14 +6,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\Contracts\OAuthenticatable as PassportAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Laravel\Passport\Contracts\OAuthenticatable as PassportAuthenticatable;
 
 class User extends Authenticatable implements PassportAuthenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasRoles, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasRoles;
+    use HasFactory;
+    use Notifiable;
 
     protected string $guard_name = 'api';
 

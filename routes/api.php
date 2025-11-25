@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\V1\BookController;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 
-Route::prefix('v1')->group(function(){
+Route::prefix('v1')->group(function () {
     Route::post('/login', function (Request $req) {
         $data = $req->validate([
             'email' => ['required','email'],
@@ -53,7 +53,7 @@ Route::prefix('v2')->group(function(){
     //
 }); */
 
-Route::get('health', fn() => response()->json(['status'=>'ok','time'=>now()->toISOString()]));
+Route::get('health', fn () => response()->json(['status' => 'ok','time' => now()->toISOString()]));
 
 // TODO: REMOVE THIS AFTER TESTS!!!
 Route::get('debug/headers', fn (Request $r) =>
